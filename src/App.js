@@ -1,6 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
-import Alert from 'react-bootstrap/Alert';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import './App.css';
@@ -17,12 +16,11 @@ function App() {
     work: 25,
     break: 5,
     working: true,
+    paused: true
   });
 
-  const [paused, setPaused] = useState(true);
-
   useEffect(() => {
-    if(paused) {
+    if(timer.paused) {
       return;
     }
     const interval = setInterval(() => {
@@ -39,7 +37,7 @@ function App() {
       }
 
       if(minutes === 0 && seconds === 0) {
-        window.navigator.vibrate(300);
+        window.navigator.vibrate(1000);
         if(timer.working) {
           minutes = timer.break
         } else {
@@ -68,7 +66,7 @@ function App() {
 
     return () => clearInterval(interval);
 
-  }, [paused, timer]);
+  }, [timer]);
 
 
   const handleClickWork = (type) => () => {
@@ -91,8 +89,8 @@ function App() {
     }
   }
 
-  const setState = (value) => () => {
-    setPaused(value)
+  const setPaused = (value) => () => {
+    setTimer({...timer, paused: value})
   }
 
   const restart = () => () => {
@@ -105,7 +103,7 @@ function App() {
   }
 
   return (
-    <Container fluid style={{marginTop: '40px', paddingTop: '20px', width: '20rem', height: '20rem', border: '3px solid black', borderRadius: '10px'}}>
+    <Container fluid style={{marginTop: '40px', paddingTop: '20px', width: '20rem', minHeight: '20rem', border: '3px solid black', borderRadius: '10px'}}>
       <h1 style={{textAlign: 'center', padding: '10px'}}>BREAK TIMER</h1>
       <Row style={{padding: '0px 0 20px 0'}}>
         <Col xs={{ span: 5, offset: 1}}>
@@ -118,7 +116,7 @@ function App() {
         <TimerWindow time={timeParser(timer)} working={timer.working}/>
       <Row>
         <Col style={{textAlign: 'center', fontSize: '3rem'}}>
-          <TimerControls setState={setState} restart={restart}/>
+          <TimerControls setPaused={setPaused} restart={restart}/>
         </Col>
       </Row>
     </Container>

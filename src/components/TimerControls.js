@@ -3,11 +3,11 @@ import { AiFillPlayCircle, AiFillPauseCircle } from 'react-icons/ai';
 import { RiRestartFill } from 'react-icons/ri';
 
 
-const TimerControls = ( {setState, restart} ) => {
+const TimerControls = ( {setPaused, restart} ) => {
     return (
         <div>
-            <AiFillPlayCircle className='control' onClick={setState(false)}/>
-            <AiFillPauseCircle className='control' onClick={setState(true)}/>
+            <AiFillPlayCircle className='control' onClick={setPaused(false)}/>
+            <AiFillPauseCircle className='control' onClick={setPaused(true)}/>
             <RiRestartFill className='control' onClick={restart()}/>
         </div>
     )
